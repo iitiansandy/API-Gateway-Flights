@@ -2,6 +2,7 @@ const { UserService } = require('../services');
 const { StatusCodes } = require('http-status-codes');
 
 const { SuccessResponse, ErrorResponse } = require('../utils/common');
+const AppError = require('../utils/errors/app-error');
 
 /**
  * POST: /cities
@@ -23,6 +24,24 @@ async function signup(req, res) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ErrorResponse});
     }
 };
+
+
+async function signin(req, res) {
+    try {
+        const user = await UserService.signin({
+            email: req.body.email,
+            password: req.body.password
+        });
+
+        SuccessResponse.data = user;
+        return res.status(StatusCodes.CREATED).send({SuccessResponse});
+
+    } catch (error) {
+        ErrorResponse.error = error;
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ErrorResponse});
+    }
+};
+
 
 
 async function getCities(req, res) {
@@ -79,8 +98,5 @@ async function updateCity(req, res) {
 
 module.exports = {
     signup,
-    getCities,
-    getCity,
-    destroyCity,
-    updateCity
+    signin
 }
