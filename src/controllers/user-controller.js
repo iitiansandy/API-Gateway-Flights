@@ -43,6 +43,23 @@ async function signin(req, res) {
 };
 
 
+async function addRoleToUser(req, res) {
+    try {
+        const user = await UserService.addRoleToUser({
+            role: req.body.role,
+            id: req.body.id
+        });
+
+        SuccessResponse.data = user;
+        return res.status(StatusCodes.CREATED).send({SuccessResponse});
+
+    } catch (error) {
+        ErrorResponse.error = error;
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ErrorResponse});
+    }
+};
+
+
 
 async function getCities(req, res) {
     try {
@@ -98,5 +115,6 @@ async function updateCity(req, res) {
 
 module.exports = {
     signup,
-    signin
+    signin,
+    addRoleToUser
 }

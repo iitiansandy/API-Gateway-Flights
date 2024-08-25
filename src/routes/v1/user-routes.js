@@ -11,6 +11,9 @@ router.post('/signup', AuthRequestMiddleware.validateAuthRequest, UserController
 // USER SIGNIN
 router.post('/signin', AuthRequestMiddleware.validateAuthRequest, UserController.signin);
 
+// 
+router.post('/role', AuthRequestMiddleware.checkAuth, AuthRequestMiddleware.isAdmin, UserController.addRoleToUser);
+
 
 
 module.exports = router;

@@ -36,7 +36,22 @@ async function checkAuth(req, res, next) {
     }
 };
 
+
+async function isAdmin(req, res, next) {
+    try {
+        const response = await UserService.isAdmin(req.user);
+        if (!response) {
+            return res.status(StatusCodes.UNAUTHORIZED).send({message: 'Not Authorized!!'});
+        };
+
+        next();
+    } catch (error) {
+        return res.status(error.statusCode).send(error);
+    }
+};
+
 module.exports = {
     validateAuthRequest,
-    checkAuth
+    checkAuth,
+    isAdmin
 };
